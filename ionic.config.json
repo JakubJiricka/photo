@@ -1,0 +1,8 @@
+{
+  "name": "photo",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "pro_id": "fdf23061"
+}
