@@ -33,6 +33,49 @@ $app-direction: ltr;
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
+$medium-blue: #2A81B4;
+$jn-app-color: #146e8c; /* Common App color */
+$jn-app-second-color: #bfbfbf; /* Common App Second combination color */
+$jn-height-of-item: 36px; /* Common height for items in list */
+$jn-app-font: '-apple-system', 'Roboto', 'Helvetica Neue', sans-serif; /* Common font type. */
+$on-bg-color: #0f96f7;
+$jn-placeholder-color: #8C8C8C;
+$bar-default-border: #45B4DA;
+$default-header-color: #34495E;
+$lighter-header-color: #455C70;
+$checkbox-fill: #1597f0;
+$white: #fff;
+$black: #000;
+$off-black: #282828;
+$red: #FF0000;
+$red-2: #ef473a;
+$medium-orange: #FF8659;
+$gray: #777;
+$gray-2: #808080;
+$gray-3: #333;
+$gray-4: #999;
+$gray-5: #666;
+$light-blue-gray: #7da2ba;
+$bright-blue: #0095ff;
+$medium-blue-2: #387ef5;
+$bright-blue-2: #3599D5;
+$light-gray: #99a4ad;
+$light-gray-2: #909090;
+$lighter-blue-gray: #96B1C6;
+$sky-blue: #ADD8E6;
+$off-white: #fbfbfb;
+$off-white-2: #c8c8c8;
+$off-white-3: #E9EDF2;
+$off-white-4: #C6D1DC;
+$off-white-5: #eee;
+$teal: #008080;
+$dark-teal: #1A3A59;
+$dark-desaturated-blue: #2b3346;
+$very-light-gray: #f5f5f5;
+$grey-sixty: #999999;
+$azure-blue: #1A97FC;
+$very-dark-blue: #071620;
+
 $colors: (
   primary:    #488aff,
   secondary:  #32db64,

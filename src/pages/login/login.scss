@@ -1,0 +1,212 @@
+page-login {
+
+    .margin-cls {
+      margin: 0 0 15px;
+    }
+  
+    .login-username {
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+      margin-bottom: 1px;
+    }
+  
+    .sign-in-button {
+      margin: 0;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      background-color: $white;
+    }
+  
+    .error-message {
+      color: $red;
+    }
+  
+    .marketing-icon {
+      margin: 20px auto;
+      display: block;
+      width: 180px;
+    }
+  
+    .marketing-text {
+      color: $white;
+      font-weight: 500;
+      text-align: center;
+    }
+  
+    @media only screen and (min-width: 414px) {
+  
+      .content-ios {
+  
+        .margin-cls {
+          margin-bottom: 35px !important;
+        }
+      }
+    }
+  }
+  
+  $jn-login-content-area: 55%;
+  
+  .text-input::placeholder {
+    color: $white;
+    opacity: 1; /* Firefox */
+  }
+  
+  .jn-login-content {
+    font-size: medium;
+    background: rgb(54, 153, 212);
+  }
+  
+  .loginInput {
+    background-color: rgba(0, 0, 0, 0);
+    margin-left: 15px;
+    height: 48px;
+    font-size: 16px;
+    color: $white;
+    width: 90%;
+    border: 0;
+  }
+  
+  .loginInput::-webkit-input-placeholder {
+    color: $white !important;
+    opacity: 0.8 !important;
+  }
+  
+  .loginInput::placeholder {
+    color: $white;
+  }
+  
+  .jn-full-width {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .jn-logo-image {
+    width: 50%;
+    margin: auto;
+  }
+  
+  .jn-logo-image-version {
+    width: 50%;
+    margin: auto;
+    position: relative;
+    top: 110px;
+  }
+  
+  .jn-login-form {
+    width: 90%;
+    margin: 50px auto 20px;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /*
+  CSS list item
+  */
+  .jn-login-item {
+    height: 47px;
+    padding: 4px 0 0;
+    border: 1px solid $bright-blue-2;
+    vertical-align: middle;
+    color: $white;
+    font-weight: 500;
+  }
+  
+  /*
+  CSS in Login box
+  */
+  .jn-login-box {
+    width: 100%;
+    height: $jn-height-of-item * 3;
+    margin: 25px auto auto;
+    font-size: medium;
+  }
+  
+  .jn-login-box-input {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    width: 100%;
+    margin: auto;
+    color: $default-header-color;
+  }
+  
+  .jn-login-box button {
+    background-color: $white;
+    width: 100%;
+    height: 40px;
+    color: rgb(53, 153, 213);
+    font-weight: 400;
+    border: 0;
+    margin: 0;
+    font-size: 16px;
+  }
+  
+  .loginInfoButton {
+    padding: 10px;
+    color: $sky-blue;
+    font-size: 28px;
+    background-color: transparent;
+  
+    .icon {
+      font-size: 28px;
+    }
+  }
+  
+  /*
+  CSS in all labels
+  */
+  .jn-login-forget-password-bar {
+    margin-top: 35px;
+    color: $white;
+    text-align: center;
+    height: 36px;
+    vertical-align: bottom;
+    font-weight: 500;
+  }
+  
+  .jn-login-error-bar {
+    color: $white;
+    text-align: center;
+    height: 75px;
+    vertical-align: bottom;
+    font-weight: 500;
+  }
+  
+  .jn-login-bottom {
+    width: 100%;
+  }
+  
+  .jn-login-bottom-content {
+    height: 180px;
+    width: 90%;
+    margin: auto;
+  }
+  
+  .jn-login-bottom-version {
+    height: 100%;
+    margin: 0;
+  }
+  
+  /*
+  CSS of information icon bar
+  */
+  .jn-login-bottom-icon {
+    bottom: 10px;
+    position: fixed;
+    right: 5px;
+    width: 40px;
+  }
+  
+  @media (orientation: landscape) {
+  
+    .jn-login-form {
+      top: 12px;
+    }
+  
+    .jn-login-bottom-icon {
+      position: relative;
+      width: 10%;
+      float: right;
+      margin-top: -70px;
+    }
+  }
+  

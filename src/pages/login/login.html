@@ -1,0 +1,52 @@
+<ion-content class="jn-login-content" padding >
+  <form class="jn-login-form" (ngSubmit)="doLogin()">
+
+    <div class="jn-full-width margin-cls">
+      <img src="assets/imgs/login/login_logo.svg" class="jn-logo-image"/>
+    </div>
+
+    <div class="list jn-login-box">
+      <div class="jn-login-box-input login-username">
+        <input placeholder="Username"
+                   type="email"
+                   class="loginInput"
+                   [(ngModel)]="loginData.username"
+                   name="loginData.username">
+      </div>
+      <div class="jn-login-box-input">
+        <input placeholder="Password"
+                   class="loginInput"
+                   type="password"
+                   [(ngModel)]="loginData.password"
+                   name="loginData.password">
+      </div>
+
+      <ion-label class="item jn-login-item sign-in-button">
+        <button type="submit" block>SIGN IN</button>
+      </ion-label>
+    </div>
+
+
+    <div class="jn-login-forget-password-bar" tappable>
+      <p>forgot your password?</p>
+    </div>
+    <div class="jn-login-error-bar">
+      <p id="errorMsg" class="error-message">{{errorMsg}}</p>
+    </div>
+  </form>
+
+  <div class="jn-login-bottom">
+    <div class="jn-login-bottom-content">
+      <img class="marketing-icon" src="assets/imgs/login/login_marketing_icons.svg">
+      <p class="marketing-text">
+        Your whole business in one place. <br/>
+        On the web and wherever you are.
+      </p>
+    </div>
+  </div>
+  <div class="jn-login-bottom-icon">
+    <button class="loginInfoButton button-icon icon button-clear">
+      <ion-icon name="information-circle"></ion-icon>
+    </button>
+  </div>
+</ion-content>

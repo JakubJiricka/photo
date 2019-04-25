@@ -1,0 +1,36 @@
+page-photo-list {
+    ion-header {
+        background-color: $on-bg-color;
+        ion-grid {
+            ion-row {
+                color: white;
+                font-size: 2rem;
+            }
+        }
+    }
+    
+    ion-content {
+        ion-grid {
+        }
+    }
+}
+
+ion-header.preview {
+    ion-grid {
+        ion-row {
+            ion-col {
+                ion-icon {
+                    &.green {
+                        color: green;
+                    }
+                    &.yellow {
+                        color: yellow;
+                    }
+                    &.blue {
+                        color: blue;
+                    }
+                }
+            }
+        }
+    }
+}
