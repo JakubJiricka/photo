@@ -14,23 +14,3 @@ page-photo-list {
         }
     }
 }
-
-ion-header.preview {
-    ion-grid {
-        ion-row {
-            ion-col {
-                ion-icon {
-                    &.green {
-                        color: green;
-                    }
-                    &.yellow {
-                        color: yellow;
-                    }
-                    &.blue {
-                        color: blue;
-                    }
-                }
-            }
-        }
-    }
-}

@@ -1,138 +1,22 @@
-<ion-header *ngIf="!preview">
+<ion-header>
   <ion-grid>
     <ion-row justify-content-between align-items-center>
       <ion-col col-auto>
         <ion-icon name="arrow-back" (click)="goBack()"></ion-icon>
       </ion-col>
       <ion-col col-auto>
-        <ion-icon name="add-circle" (click)="openCamera()"></ion-icon>
+        <ion-icon name="add-circle" (click)="goPreviewPage()"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-header>
 
-<ion-content *ngIf="!preview">
-
+<ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col col-3 *ngFor="let i of Arr(num).fill(1)">
-        <img src="assets/imgs/photo-list/1.jpg" />
+      <ion-col col-3 *ngFor="let obj of storedImages; let i = index">
+        <img [src]="obj.image_string" />
       </ion-col>
     </ion-row>
   </ion-grid>
-
-</ion-content>
-
-<ion-header *ngIf="preview" class="preview">
-    <ion-grid>
-      <ion-row justify-content-between align-items-center>
-        <ion-col col-auto>
-          <ion-icon name="close-circle" (click)="reset()" class="close-circle"></ion-icon>
-        </ion-col>
-        <ion-col col-auto>
-          <ion-icon name="brush"></ion-icon>
-        </ion-col>
-        <ion-col col-auto>
-          <ion-icon name="water" class="green"></ion-icon>
-        </ion-col>
-        <ion-col col-auto>
-          <ion-icon name="water" class="yellow"></ion-icon>
-        </ion-col>
-        <ion-col col-auto>
-          <ion-icon name="water" class="blue"></ion-icon>
-        </ion-col>
-        <ion-col col-auto>
-          <ion-icon name="text"></ion-icon>
-        </ion-col>
-        <ion-col col-auto>
-          <ion-icon name="arrow-round-forward"></ion-icon>
-        </ion-col>
-        <ion-col col-auto>
-          <ion-icon name="crop"></ion-icon>
-        </ion-col>
-        <ion-col col-auto>
-          <ion-icon name="create"></ion-icon>
-        </ion-col>
-        <ion-col col-auto>
-          <ion-icon name="undo"></ion-icon>
-        </ion-col>
-        <button ion-button round outline color="light" small>Save</button>
-      </ion-row>
-    </ion-grid>
-
-
-
-    <!-- <ion-buttons end>
-      <button ion-button icon-only color="danger" (click)="clear()">
-        <ion-icon name="close"></ion-icon>
-      </button>
-      <button ion-button icon-only color="secondary" (click)="save()">
-        <ion-icon name="checkmark"></ion-icon>
-      </button>
-    </ion-buttons> -->
-
-</ion-header>
- 
-<ion-content *ngIf="preview">
-  <button ion-button full (click)="captureImage()" *ngIf="!myImage">Capture Image</button>
-  
-  <angular-cropper #angularCropper [cropperOptions]="cropperOptions" [imageUrl]="'assets/imgs/photo-list/1.jpg'"></angular-cropper>
- 
-  <ion-row *ngIf="myImage">
-    <ion-col col-4>
-      <button ion-button outline icon-left color="primary" (click)="zoom(true)">
-        <ion-icon name="add"></ion-icon> Zoom
-      </button>
-    </ion-col>
-    <ion-col col-4>
-      <button ion-button outline icon-left color="primary" (click)="zoom(false)">
-        <ion-icon name="remove"></ion-icon> Zoom
-      </button>
-    </ion-col>
-    <ion-col col-4>
-      <button ion-button outline icon-left (click)="rotate()">
-        <ion-icon name="refresh"></ion-icon> 90 deg
-      </button>
-    </ion-col>
- 
-    <ion-col col-2>
-      <button ion-button clear (click)="scaleX()">
-        Flip X
-      </button>
-    </ion-col>
-    <ion-col col-2>
-      <button ion-button clear (click)="scaleY()">
-        Flip Y
-      </button>
-    </ion-col>
- 
-    <ion-col col-2>
-      <button ion-button clear icon-only (click)="move(0, -10)">
-        <ion-icon name="arrow-round-up"></ion-icon>
-      </button>
-    </ion-col>
-    <ion-col col-2>
-      <button ion-button clear icon-only (click)="move(0, 10)">
-        <ion-icon name="arrow-round-down"></ion-icon>
-      </button>
-    </ion-col>
-    <ion-col col-2>
-      <button ion-button clear icon-only (click)="move(-10, 0)">
-        <ion-icon name="arrow-round-back"></ion-icon>
-      </button>
-    </ion-col>
-    <ion-col col-2>
-      <button ion-button clear icon-only (click)="move(10, 0)">
-        <ion-icon name="arrow-round-forward"></ion-icon>
-      </button>
-    </ion-col>
-  </ion-row>
- 
-  <ion-card *ngIf="croppedImage">
-    <ion-card-header>My Result</ion-card-header>
-    <ion-card-content>
-      <img [src]="croppedImage">
-    </ion-card-content>
-  </ion-card>
- 
 </ion-content>

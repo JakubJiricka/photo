@@ -1,0 +1,35 @@
+page-preview-photo {
+    ion-header.preview {
+        background-color: $on-bg-color;
+        ion-grid {
+            ion-row {
+                color: white;
+                font-size: 2rem;
+                ion-col {
+                    ion-icon {
+                        &.green {
+                            color: green;
+                        }
+                        &.yellow {
+                            color: yellow;
+                        }
+                        &.blue {
+                            color: blue;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    ion-content.preview {
+        .canvas-text {
+            position: absolute;
+            background-color: transparent;
+        }
+    
+        .tempCanvas {
+            position: absolute;
+        }
+    }
+}

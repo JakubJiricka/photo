@@ -1,0 +1,34 @@
+page-edit-photo {
+    ion-content.editPage {
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    
+        .actions {
+            position: absolute;
+            top: 0;
+            padding: 5px 20px;
+            ion-row {
+                ion-col {
+                    ion-icon {
+                        color: white;
+                        font-size: 3rem;
+                    }
+                }
+    
+                &.metadata {
+                    background-color: rgba(255, 255, 255, 0.8);
+                    border-radius: 10px;
+                    margin-top: 2rem;
+                    ion-row {
+                        width: 100%;
+                        ion-item {
+                            background-color: transparent;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

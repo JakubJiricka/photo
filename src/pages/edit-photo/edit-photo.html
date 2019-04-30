@@ -1,0 +1,39 @@
+<ion-content class="editPage">
+  <img [src]="current" />
+  <ion-grid class="actions">
+    <ion-row justify-content-between align-items-center>
+      <ion-col col-auto>
+        <ion-icon name="close-circle-outline" (click)="goPreviewPage(false)"></ion-icon>
+      </ion-col>
+      <ion-col col-auto>
+        <button ion-button round outline color="light" small (click)="goPreviewPage(true)">Save</button>
+      </ion-col>
+    </ion-row>
+    <ion-row class="metadata">
+      <ion-row>
+        <!-- Textarea with custom number of rows and cols -->
+        <ion-item>
+          <ion-label position="stacked">Notes</ion-label>
+          <ion-textarea rows="6" placeholder="Enter any notes here..." [(ngModel)]="metaData.notes"></ion-textarea>
+        </ion-item>
+      </ion-row>
+      <ion-row>
+        <ion-item>
+          <ion-label>Attachment Category</ion-label>
+          <ion-select value="before" [(ngModel)]="metaData.category">
+            <ion-option value="before">Before</ion-option>
+            <ion-option value="after">After</ion-option>
+            <ion-option value="damage">Damage</ion-option>
+            <ion-option value="documents">Documents</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-row>
+      <ion-row>
+        <ion-item>
+          <ion-label>File name</ion-label>
+          <ion-input [(ngModel)]="metaData.fileName"></ion-input>
+        </ion-item>
+      </ion-row>
+    </ion-row>
+  </ion-grid>
+</ion-content>

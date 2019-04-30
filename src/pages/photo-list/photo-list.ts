@@ -1,14 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { PreviewPhotoPage } from '../preview-photo/preview-photo';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { AngularCropperjsComponent } from 'angular-cropperjs';
-
-/**
- * Generated class for the PhotoListPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { PhotoProvider } from '../../providers/photo/photo';
 
 @IonicPage()
 @Component({
@@ -16,41 +10,26 @@ import { AngularCropperjsComponent } from 'angular-cropperjs';
   templateUrl: 'photo-list.html',
 })
 export class PhotoListPage {
-  @ViewChild('angularCropper') public angularCropper: AngularCropperjsComponent;
-  cropperOptions: any;
-  croppedImage = null;
-
-  myImage = null;
-  scaleValX = 1;
-  scaleValY = 1;
-  preview = false;
+  Arr = Array;
+  num: number = 60;
+  picture = '';
+  storedImages = [];
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private camera: Camera
+    private camera: Camera,
+    public photoService: PhotoProvider
   ) {
-    this.cropperOptions = {
-      dragMode: 'crop',
-      aspectRatio: 1,
-      autoCrop: true,
-      movable: true,
-      zoomable: true,
-      scalable: true,
-      autoCropArea: 0.8,
-    };
+    this.storedImages = this.photoService.images;
+  }
+
+  ionViewDidEnter() {
+    
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PhotoListPage');
-  }
-
-  Arr = Array;
-  num: number = 60;
-  picture = '';
-
-  goBack() {
-
+    console.log('ionViewDidLoad PhotoListPage'); 
   }
 
   openCamera() {
@@ -64,47 +43,18 @@ export class PhotoListPage {
     this.camera.getPicture(options).then((imageData) => {
       // imageData is either a base64 encoded string or a file URI
       // If it's base64 (DATA_URL):
-      this.croppedImage = 'data:image/jpeg;base64,' + imageData;
-      this.preview = true;
+      //this.croppedImage = 'data:image/jpeg;base64,' + imageData;
+      this.goPreviewPage();
     }, (err) => {
       // Handle error
     });
   }
 
-  reset() {
-    this.angularCropper.cropper.reset();
+  goPreviewPage() {
+    this.navCtrl.push(PreviewPhotoPage);
   }
 
-  clear() {
-    this.angularCropper.cropper.clear();
-  }
+  goBack() {
 
-  rotate() {
-    this.angularCropper.cropper.rotate(90);
   }
-
-  zoom(zoomIn: boolean) {
-    let factor = zoomIn ? 0.1 : -0.1;
-    this.angularCropper.cropper.zoom(factor);
-  }
-
-  scaleX() {
-    this.scaleValX = this.scaleValX * -1;
-    this.angularCropper.cropper.scaleX(this.scaleValX);
-  }
-
-  scaleY() {
-    this.scaleValY = this.scaleValY * -1;
-    this.angularCropper.cropper.scaleY(this.scaleValY);
-  }
-
-  move(x, y) {
-    this.angularCropper.cropper.move(x, y);
-  }
-
-  save() {
-    let croppedImgB64String: string = this.angularCropper.cropper.getCroppedCanvas().toDataURL('image/jpeg', (100 / 100));
-    this.croppedImage = croppedImgB64String;
-  }
-
 }
