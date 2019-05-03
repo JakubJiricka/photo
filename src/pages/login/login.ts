@@ -29,7 +29,7 @@ export class LoginPage {
   };
 
   doLogin() {
-    if(this.loginData.username === 'test' && this.loginData.password === 'test') {
+    if(this.loginData.username === 'a' && this.loginData.password === 'a') {
       this.navCtrl.push(PhotoListPage);
     }
   }

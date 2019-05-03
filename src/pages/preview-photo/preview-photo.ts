@@ -1,7 +1,6 @@
 import { Component, ViewChild, Renderer } from '@angular/core';
-import { IonicPage, NavController, NavParams, Content, Platform, normalizeURL } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Content, Platform } from 'ionic-angular';
 import { AngularCropperjsComponent } from 'angular-cropperjs';
-import { File, IWriteOptions } from '@ionic-native/file';
 import { Storage } from '@ionic/storage';
 import { EditPhotoPage } from '../edit-photo/edit-photo';
 import { PhotoListPage } from '../photo-list/photo-list';
@@ -57,7 +56,6 @@ export class PreviewPhotoPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private plt: Platform,
-    private file: File,
     private storage: Storage,
     public renderer: Renderer,
     public photoService: PhotoProvider,
@@ -166,8 +164,7 @@ export class PreviewPhotoPage {
   }
 
   undo() {
-    this.inputDisplay = "none";
-    console.log(this.history);
+    if(this.isText) this.writeText();
     if (this.history.length > 0) {
       if (this.history.length === 1) {
         this.photoService.current = this.history[0];
@@ -268,7 +265,6 @@ export class PreviewPhotoPage {
     if (this.isText) this.writeText();
     this.dataUrl = this.canvasElement.toDataURL();
     this.photoService.current = this.dataUrl;
-    //console.log(this.history);
   }
 
   upload() {
@@ -278,7 +274,6 @@ export class PreviewPhotoPage {
       toast => {
         this.photoService.openCamera = true;
         this.navCtrl.push(PhotoListPage);
-        console.log(toast);
       }
     );
   }
@@ -295,38 +290,8 @@ export class PreviewPhotoPage {
   }
 
   removeImageAtIndex(index) {
-    let removed = this.storedImages.splice(index, 1);
+    this.storedImages.splice(index, 1);
     this.storage.set(STORAGE_KEY, this.storedImages);
-  }
-
-  getImagePath(imageName) {
-    let path = this.file.dataDirectory + imageName;
-    // https://ionicframework.com/docs/wkwebview/#my-local-resources-do-not-load
-    path = normalizeURL(path);
-    return path;
-  }
-
-  b64toBlob(b64Data, contentType) {
-    contentType = contentType || '';
-    var sliceSize = 512;
-    var byteCharacters = atob(b64Data);
-    var byteArrays = [];
-
-    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-      var byteNumbers = new Array(slice.length);
-      for (var i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-
-      var byteArray = new Uint8Array(byteNumbers);
-
-      byteArrays.push(byteArray);
-    }
-
-    var blob = new Blob(byteArrays, { type: contentType });
-    return blob;
   }
 
   reset() {

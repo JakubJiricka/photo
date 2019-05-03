@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { PhotoLibrary } from '@ionic-native/photo-library';
 import { PhotoListPage } from '../photo-list/photo-list';
+import { ImportPreviewPage } from '../import-preview/import-preview';
 import { PhotoProvider } from '../../providers/photo/photo';
 
 @IonicPage()
@@ -45,6 +46,6 @@ export class ImportPhotosPage {
   }
 
   goImportPreview() {
-
+    this.navCtrl.push(ImportPreviewPage);
   }
 }

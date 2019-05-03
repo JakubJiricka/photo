@@ -10,6 +10,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { LongPressModule } from 'ionic-long-press';
 import { HttpClientModule } from '@angular/common/http';
 import { CDVPhotoLibraryPipe } from './cdvphotolibrary.pipe';
+import { CameraPreview } from '@ionic-native/camera-preview';
 
 import { MyApp } from './app.component';
 import { PhotoListPage } from '../pages/photo-list/photo-list';
@@ -58,6 +59,7 @@ import { Toast } from '@ionic-native/toast';
     PhotoProvider,
     PhotoLibrary,
     Camera,
+    CameraPreview,
     Toast
   ]
 })

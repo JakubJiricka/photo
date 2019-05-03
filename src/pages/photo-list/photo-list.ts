@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { PreviewPhotoPage } from '../preview-photo/preview-photo';
 import { ImportPhotosPage } from '../import-photos/import-photos';
@@ -21,7 +21,7 @@ export class PhotoListPage {
   isLongPress = false;
   isDelete = false;
   index;
-  photos : any;
+  photos: any;
 
   constructor(
     public navCtrl: NavController,
@@ -52,22 +52,23 @@ export class PhotoListPage {
     console.log(this.storedImages);
   }
 
-  
+
 
   ionViewDidEnter() {
-    
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PhotoListPage');
-    
-    if(this.photoService.openCamera)  {
+
+    if (this.photoService.openCamera) {
       this.photoService.openCamera = false;
       this.openCamera();
     }
   }
 
   openCamera() {
+
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
@@ -85,13 +86,13 @@ export class PhotoListPage {
   }
 
   goPreviewPage(str: string) {
-    if(!this.isLongPress) {
-      if(str != "new") {
+    if (!this.isLongPress) {
+      if (str != "new") {
         this.photoService.current = str;
         this.navCtrl.push(PreviewPhotoPage);
-      }else {
+      } else {
         this.openCamera();
-      }      
+      }
     }
     this.isLongPress = false;
   }
@@ -111,7 +112,7 @@ export class PhotoListPage {
   }
 
   released() {
-    
+
   }
 
   delete() {
