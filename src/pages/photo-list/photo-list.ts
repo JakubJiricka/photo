@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { PreviewPhotoPage } from '../preview-photo/preview-photo';
 import { ImportPhotosPage } from '../import-photos/import-photos';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -29,6 +29,7 @@ export class PhotoListPage {
     private camera: Camera,
     private storage: Storage,
     public photoService: PhotoProvider,
+    public events: Events
   ) {
 
     // Load all stored images when the app is ready
@@ -98,7 +99,6 @@ export class PhotoListPage {
   }
 
   goBack() {
-
   }
 
   pressed(i) {
@@ -108,11 +108,9 @@ export class PhotoListPage {
   }
 
   active() {
-
   }
 
   released() {
-
   }
 
   delete() {

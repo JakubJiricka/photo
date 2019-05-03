@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { ImportPhotosPage } from '../import-photos/import-photos';
 import { PhotoListPage } from '../photo-list/photo-list';
 import { PhotoProvider } from '../../providers/photo/photo';
@@ -26,7 +26,8 @@ export class ImportPreviewPage {
     public navParams: NavParams,
     public photoService: PhotoProvider,
     private storage: Storage,
-    private toast: Toast
+    private toast: Toast,
+    public events: Events
     ) {
 
     for(let i = 0; i < 4; i++) {
@@ -79,6 +80,8 @@ export class ImportPreviewPage {
     else message = "Photo queued for upload";
     this.toast.show(message, '1000', 'center').subscribe(
       toast => {
+        this.photoService.upload_count += this.count;
+        this.events.publish('upload', this.photoService.upload_count);
         this.navCtrl.push(PhotoListPage);
       }
     );

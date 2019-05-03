@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
+import { Events } from 'ionic-angular';
 const UPLOAD_KEY = 'UPLOAD_FILE';
 
 class Image {
@@ -27,17 +28,22 @@ export class PhotoProvider {
   pendingUploadImages = [];
   openCamera = false;
   storedImages = [];
+  upload_count = 0;
 
   constructor(
     public http: HttpClient,
     private storage: Storage,
+    public events: Events
     ) {
     console.log('Hello PhotoProvider Provider');
+    let that = this;
     this.storage.ready().then(() => {
       this.storage.get(UPLOAD_KEY).then(data => {
         if (data != undefined) {
           this.pendingUploadImages = data;
+          that.upload_count = this.pendingUploadImages.length;          
         }
+        that.events.publish('upload',this.upload_count);
       });
     });
   }
@@ -83,5 +89,7 @@ export class PhotoProvider {
   removeImageAtIndex(index) {
     this.pendingUploadImages.splice(index, 1);
     this.storage.set(UPLOAD_KEY, this.pendingUploadImages);
+    this.upload_count = this.pendingUploadImages.length;
+    this.events.publish('upload',this.upload_count);
   }
 }

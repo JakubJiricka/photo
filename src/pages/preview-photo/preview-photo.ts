@@ -1,5 +1,5 @@
 import { Component, ViewChild, Renderer } from '@angular/core';
-import { IonicPage, NavController, NavParams, Content, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Content, Platform, Events } from 'ionic-angular';
 import { AngularCropperjsComponent } from 'angular-cropperjs';
 import { Storage } from '@ionic/storage';
 import { EditPhotoPage } from '../edit-photo/edit-photo';
@@ -59,7 +59,8 @@ export class PreviewPhotoPage {
     private storage: Storage,
     public renderer: Renderer,
     public photoService: PhotoProvider,
-    private toast: Toast
+    private toast: Toast,
+    public events: Events
   ) {
     this.cropperOptions = {
       dragMode: 'crop',
@@ -279,6 +280,7 @@ export class PreviewPhotoPage {
     this.toast.show('Photo queued for upload', '1000', 'center').subscribe(
       toast => {
         this.photoService.openCamera = true;
+        this.events.publish('upload', ++this.photoService.upload_count);
         this.navCtrl.push(PhotoListPage);
       }
     );

@@ -79,5 +79,6 @@
 <ion-content class="preview">
   <canvas #imageCanvas (touchstart)="startDrawing($event)" (touchmove)="moved($event)" (touchend)="endDrawing()" [style.display]="isCrop?'none':'block'"></canvas>
   <input type="text" [style.marginTop.px]="textTop" [style.marginLeft.px]="textLeft" [style.color]="selectedColor" [style.display]="inputDisplay" class="canvas-text" [(ngModel)]="text" />
-  <angular-cropper #angularCropper [cropperOptions]="cropperOptions" [imageUrl]="imageUrlToCrop" *ngIf="isCrop"></angular-cropper> 
+  <angular-cropper #angularCropper [cropperOptions]="cropperOptions" [imageUrl]="imageUrlToCrop" *ngIf="isCrop"></angular-cropper>
+  <notifications></notifications>
 </ion-content>

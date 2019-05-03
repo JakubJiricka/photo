@@ -22,6 +22,8 @@ import { PhotoProvider } from '../providers/photo/photo';
 import { PhotoLibrary } from '@ionic-native/photo-library';
 import { Toast } from '@ionic-native/toast';
 
+import {NotificationsComponent} from '../components/notifications/notifications';
+
 
 
 @NgModule({
@@ -32,7 +34,8 @@ import { Toast } from '@ionic-native/toast';
     EditPhotoPage,
     ImportPhotosPage,
     ImportPreviewPage,
-    CDVPhotoLibraryPipe
+    CDVPhotoLibraryPipe,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,8 @@ import { Toast } from '@ionic-native/toast';
     PreviewPhotoPage,
     EditPhotoPage,
     ImportPhotosPage,
-    ImportPreviewPage
+    ImportPreviewPage,
+    NotificationsComponent
   ],
   providers: [
     StatusBar,
