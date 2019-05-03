@@ -1,3 +1,19 @@
 page-import-photos {
-
+    ion-content {
+        ion-grid {
+            ion-row {
+                ion-col {
+                    padding: 0;
+                    padding-left: 5px;
+                    margin-top: 5px;
+                    ion-icon {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        color: #3eadff;
+                    }
+                }
+            }
+        }
+    }
 }

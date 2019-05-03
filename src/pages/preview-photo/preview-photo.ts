@@ -164,7 +164,10 @@ export class PreviewPhotoPage {
   }
 
   undo() {
-    if(this.isText) this.writeText();
+    if(this.isText) {
+      this.writeText();
+      this.isText = false;
+    }
     if (this.history.length > 0) {
       if (this.history.length === 1) {
         this.photoService.current = this.history[0];
@@ -200,8 +203,8 @@ export class PreviewPhotoPage {
       ctx.strokeStyle = "red";
       ctx.fillStyle = "red";
 
-      ctx.setTransform(1, 0, 0, 1, 20, 0);
-      ctx.translate(0, 40);
+      //ctx.setTransform(1, 0, 0, 1, 20, 0);
+      //ctx.translate(0, 40);
       ctx.beginPath();
       this.startX = ev.touches[0].pageX;
       this.startY = ev.touches[0].pageY - this.canvasPositionY;
@@ -238,13 +241,15 @@ export class PreviewPhotoPage {
   }
 
   endDrawing() {
-    this.dataUrl = this.canvasElement.toDataURL();
-    if (!this.isText) this.history.push(this.dataUrl);
+    
     if (this.isArrow) {
       let ctx = this.canvasElement.getContext('2d');
       ctx.arrow(this.startX, this.startY - 50, this.saveX, this.saveY - 50, [0, 1, -10, 1, -10, 5]);
       ctx.fill();
     }
+
+    this.dataUrl = this.canvasElement.toDataURL();
+    if (!this.isText) this.history.push(this.dataUrl);
 
   }
 
@@ -259,6 +264,7 @@ export class PreviewPhotoPage {
     ctx.fillText(this.text, this.saveX, this.saveY + 20);
     this.dataUrl = this.canvasElement.toDataURL();
     this.history.push(this.dataUrl);
+    this.text = '';
   }
 
   saveCanvasImage() {

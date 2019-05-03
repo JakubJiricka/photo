@@ -26,6 +26,7 @@ export class PhotoProvider {
   images: Array<Image>[];
   pendingUploadImages = [];
   openCamera = false;
+  storedImages = [];
 
   constructor(
     public http: HttpClient,
