@@ -4,8 +4,14 @@
       <ion-col col-auto>
         <ion-icon name="arrow-back" (click)="goBack()"></ion-icon>
       </ion-col>
+      <ion-col>
+        <ion-icon name="trash" *ngIf="isDelete" (click)="delete()"></ion-icon>
+      </ion-col>
       <ion-col col-auto>
-        <ion-icon name="add-circle" (click)="goPreviewPage()"></ion-icon>
+        <ion-icon name="images" (click)="goImportPhotos()"></ion-icon>
+      </ion-col>
+      <ion-col col-auto>
+        <ion-icon name="add-circle" (click)="goPreviewPage('new')"></ion-icon>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -14,7 +20,7 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col col-3 *ngFor="let obj of storedImages; let i = index">
+      <ion-col col-4 *ngFor="let obj of storedImages; let i = index" ion-long-press (onPressStart)="pressed(i)" (onPressing)="active()" (onPressEnd)="released()" (click)="goPreviewPage(obj.image_string)">
         <img [src]="obj.image_string" />
       </ion-col>
     </ion-row>

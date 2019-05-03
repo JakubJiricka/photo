@@ -6,8 +6,10 @@ import { Storage } from '@ionic/storage';
 import { EditPhotoPage } from '../edit-photo/edit-photo';
 import { PhotoListPage } from '../photo-list/photo-list';
 import { PhotoProvider } from '../../providers/photo/photo';
+import { Toast } from '@ionic-native/toast';
 
 const STORAGE_KEY = 'IMAGE_LIST';
+const UPLOAD_KEY = 'UPLOAD_FILE';
 
 @IonicPage()
 @Component({
@@ -18,9 +20,8 @@ export class PreviewPhotoPage {
 
   @ViewChild('angularCropper') public angularCropper: AngularCropperjsComponent;
   @ViewChild('imageCanvas') canvas: any;
-  //@ViewChild('tempCanvas') tempCanvas: any;
+  @ViewChild('header') header: any;
   canvasElement: any;
-  //tempCanvasElement: any;
   saveX: number;
   saveY: number;
   startX: number;
@@ -31,10 +32,12 @@ export class PreviewPhotoPage {
   croppedImage = null;
 
   storedImages = [];
+  pendingUploadImages = [];
 
   myImage = null;
   scaleValX = 1;
   scaleValY = 1;
+  canvasPositionY;
 
   isCrop = false;
   selectedColor = "green";
@@ -47,56 +50,54 @@ export class PreviewPhotoPage {
   textLeft = "0";
   text = '';
   tempTop = "unset";
-  isDown = false;
-  x1;
-  y1;
-  w;
-  h;
   imageUrlToCrop = '';
   history = [];
-  initialImage = '';
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
     private plt: Platform,
-    private file: File, 
+    private file: File,
     private storage: Storage,
     public renderer: Renderer,
-    public photoService: PhotoProvider
-    ) {
-      this.cropperOptions = {
-        dragMode: 'crop',
-        aspectRatio: 1,
-        autoCrop: true,
-        movable: true,
-        zoomable: true,
-        scalable: true,
-        autoCropArea: 0.8,
-      };
-  
-      // Load all stored images when the app is ready
-      this.storage.ready().then(() => {
-        this.storage.get(STORAGE_KEY).then(data => {
-          if (data != undefined) {
-            this.storedImages = data;
-          }
-        });
-      });
+    public photoService: PhotoProvider,
+    private toast: Toast
+  ) {
+    this.cropperOptions = {
+      dragMode: 'crop',
+      aspectRatio: 1,
+      autoCrop: true,
+      movable: true,
+      zoomable: true,
+      scalable: true,
+      autoCropArea: 0.8,
+    };
 
-      this.photoService.images = this.storedImages;
-      console.log(this.photoService.images);
+    // Load all stored images when the app is ready
+    this.storage.ready().then(() => {
+      this.storage.get(STORAGE_KEY).then(data => {
+        if (data != undefined) {
+          this.storedImages = data;
+        }
+      });
+      this.storage.get(UPLOAD_KEY).then(data => {
+        if (data != undefined) {
+          this.pendingUploadImages = data;
+        }
+      });
+    });
+
+    console.log(this.storedImages);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PreviewPhotoPage');
-    this.initialImage = "assets/imgs/photo-list/1.jpg";
-    this.photoService.current = this.initialImage;
     this.canvasElement = this.canvas.nativeElement;
     this.canvasElement.width = this.plt.width() + '';
-    this.canvasElement.height = 300;
-    
-    this.canvasElement.getContext('2d').__proto__.arrow = function(startX, startY, endX, endY, controlPoints) {
+    this.canvasElement.height = this.plt.height() - this.header.nativeElement.offsetHeight + '';
+    this.canvasPositionY = this.header.nativeElement.offsetHeight;
+
+    this.canvasElement.getContext('2d').__proto__.arrow = function (startX, startY, endX, endY, controlPoints) {
       var dx = endX - startX;
       var dy = endY - startY;
       var len = Math.sqrt(dx * dx + dy * dy);
@@ -105,7 +106,7 @@ export class PreviewPhotoPage {
       var a = [];
       let i, x, y;
       a.push(0, 0);
-      
+
       for (i = 0; i < controlPoints.length; i += 2) {
         x = controlPoints[i];
         y = controlPoints[i + 1];
@@ -113,8 +114,8 @@ export class PreviewPhotoPage {
       }
       a.push(len, 0);
       for (i = controlPoints.length; i > 0; i -= 2) {
-       x = controlPoints[i - 2];
-       y = controlPoints[i - 1];
+        x = controlPoints[i - 2];
+        y = controlPoints[i - 1];
         a.push(x < 0 ? len + x : x, -y);
       }
       a.push(0, 0);
@@ -126,9 +127,9 @@ export class PreviewPhotoPage {
       }
     };
 
-    this.history.push(this.initialImage);
+    this.history.push(this.photoService.current);
 
-    this.loadImageToCanvas(this.initialImage);
+    this.loadImageToCanvas(this.photoService.current);
   }
 
   loadImageToCanvas(src: string) {
@@ -136,22 +137,24 @@ export class PreviewPhotoPage {
     let img = new Image;
     img.src = src;
     let width = this.canvasElement.width;
-    img.onload = function() {
-      ctx.drawImage(img, 0, 0, width, 300);
+    let height = this.canvasElement.height;
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0, width, height);
     };
   }
 
   // Tools
   arrowTool() {
-    this.isPen=false; this.isText; this.isArrow=true; this.inputDisplay = "none";
+    this.isPen = false; this.isText = false; this.isArrow = true; this.inputDisplay = "none"; this.text = '';
+    if (this.text != '') this.writeText();
   }
 
   textTool() {
-    this.isPen=false; this.isArrow=false; this.isText=true;
+    this.isPen = false; this.isArrow = false; this.isText = true; this.text = '';
   }
 
   penTool() {
-    this.isText=false; this.isArrow=false; this.isPen=true; this.inputDisplay = "none";
+    this.isText = false; this.isArrow = false; this.isPen = true; this.inputDisplay = "none"; this.text = '';
   }
 
   cropTool() {
@@ -159,41 +162,41 @@ export class PreviewPhotoPage {
     this.imageUrlToCrop = dataUrl;
     this.isCrop = true;
     this.inputDisplay = "none";
+    this.text = '';
   }
 
   undo() {
     this.inputDisplay = "none";
     console.log(this.history);
-    if(this.history.length > 0) {
-      if(this.history.length === 1){
-        this.photoService.current = this.history[0];        
-      }else {
+    if (this.history.length > 0) {
+      if (this.history.length === 1) {
+        this.photoService.current = this.history[0];
+      } else {
         this.history.pop();
         this.photoService.current = this.history[this.history.length - 1];
       }
 
       this.loadImageToCanvas(this.photoService.current);
-      
+
     }
   }
 
   // StartDrawing
 
   startDrawing(ev) {
-    var canvasPosition = this.canvasElement.getBoundingClientRect();
-    
-    console.log(ev.touches[0].pageX, ev.touches[0].pageY);
+
+    let height = this.canvasElement.height;
 
     // Put input box and write text
-    if(this.isText) {
-      if(this.text != '') this.writeText();
+    if (this.isText) {
+      if (this.text != '') this.writeText();
       this.inputDisplay = "block";
       this.text = "";
-      this.textTop = (ev.touches[0].pageY - 350) + "";
+      this.textTop = (ev.touches[0].pageY - height - 50) + "";
       this.textLeft = (ev.touches[0].pageX) + "";
     }
 
-    if(this.isArrow) {
+    if (this.isArrow) {
       let ctx = this.canvasElement.getContext('2d');
       this.tempTop = "0";
       ctx.lineWidth = 1;
@@ -204,38 +207,34 @@ export class PreviewPhotoPage {
       ctx.translate(0, 40);
       ctx.beginPath();
       this.startX = ev.touches[0].pageX;
-      this.startY = ev.touches[0].pageY - canvasPosition.y;
+      this.startY = ev.touches[0].pageY - this.canvasPositionY;
     }
     this.saveX = ev.touches[0].pageX;
-    this.saveY = ev.touches[0].pageY - canvasPosition.y;
+    this.saveY = ev.touches[0].pageY - this.canvasPositionY;
   }
 
   moved(ev) {
-    if(this.isText) return false;
-    
-    var canvasPosition = this.canvasElement.getBoundingClientRect();
+    if (this.isText) return false;
 
     let currentX = ev.touches[0].pageX;
-    let currentY = ev.touches[0].pageY - canvasPosition.y;
+    let currentY = ev.touches[0].pageY - this.canvasPositionY;
     let ctx = this.canvasElement.getContext('2d');
 
-    if(this.isArrow) {
-      // ctx.clearRect(0, 0,ctx.width, 300);
-      // ctx.arrow(this.startX, this.startY, currentX, currentY, [0, 1, -10, 1, -10, 5]);
-      // ctx.fill();
-    } else if(this.isPen) {
+    if (this.isArrow) {
+
+    } else if (this.isPen) {
       ctx.lineJoin = 'round';
       ctx.strokeStyle = this.selectedColor;
       ctx.lineWidth = 5;
 
       ctx.beginPath();
-      
+
       ctx.moveTo(this.saveX, this.saveY);
       ctx.lineTo(currentX, currentY);
       ctx.closePath();
 
       ctx.stroke();
-    }    
+    }
 
     this.saveX = currentX;
     this.saveY = currentY;
@@ -243,13 +242,13 @@ export class PreviewPhotoPage {
 
   endDrawing() {
     this.dataUrl = this.canvasElement.toDataURL();
-    if(!this.isText) this.history.push(this.dataUrl);
-    if(this.isArrow) {
+    if (!this.isText) this.history.push(this.dataUrl);
+    if (this.isArrow) {
       let ctx = this.canvasElement.getContext('2d');
       ctx.arrow(this.startX, this.startY - 50, this.saveX, this.saveY - 50, [0, 1, -10, 1, -10, 5]);
       ctx.fill();
-    } 
-    
+    }
+
   }
 
   // Write Text
@@ -263,41 +262,43 @@ export class PreviewPhotoPage {
     ctx.fillText(this.text, this.saveX, this.saveY + 20);
     this.dataUrl = this.canvasElement.toDataURL();
     this.history.push(this.dataUrl);
-  }  
+  }
 
   saveCanvasImage() {
-    if(this.isText) this.writeText();
+    if (this.isText) this.writeText();
     this.dataUrl = this.canvasElement.toDataURL();
+    this.photoService.current = this.dataUrl;
     //console.log(this.history);
   }
 
   upload() {
     this.saveCanvasImage();
     this.storeImage();
+    this.toast.show('Photo queued for upload', '1000', 'center').subscribe(
+      toast => {
+        this.photoService.openCamera = true;
+        this.navCtrl.push(PhotoListPage);
+        console.log(toast);
+      }
+    );
   }
 
   storeImage() {
     let saveObj = { image_string: this.dataUrl, notes: this.photoService.notes, category: this.photoService.category, fileName: this.photoService.fileName };
     this.storedImages.push(saveObj);
-    this.photoService.images = this.storedImages;
-    console.log(this.storedImages);
+    this.pendingUploadImages.push(saveObj);
+    this.storage.set(UPLOAD_KEY, this.pendingUploadImages).then(() => {
+    });
     this.storage.set(STORAGE_KEY, this.storedImages).then(() => {
-      setTimeout(() =>  {
-        this.content.scrollToBottom();
-      }, 500);
+      this.photoService.uploadPhoto();
     });
   }
-   
+
   removeImageAtIndex(index) {
     let removed = this.storedImages.splice(index, 1);
-    this.photoService.images = this.storedImages;
-    // this.file.removeFile(this.file.dataDirectory, removed[0].img).then(res => {
-    // }, err => {
-    //   console.log('remove err; ' ,err);
-    // });
     this.storage.set(STORAGE_KEY, this.storedImages);
   }
-   
+
   getImagePath(imageName) {
     let path = this.file.dataDirectory + imageName;
     // https://ionicframework.com/docs/wkwebview/#my-local-resources-do-not-load
@@ -310,20 +311,20 @@ export class PreviewPhotoPage {
     var sliceSize = 512;
     var byteCharacters = atob(b64Data);
     var byteArrays = [];
-   
+
     for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
       var slice = byteCharacters.slice(offset, offset + sliceSize);
-   
+
       var byteNumbers = new Array(slice.length);
       for (var i = 0; i < slice.length; i++) {
         byteNumbers[i] = slice.charCodeAt(i);
       }
-   
+
       var byteArray = new Uint8Array(byteNumbers);
-   
+
       byteArrays.push(byteArray);
     }
-   
+
     var blob = new Blob(byteArrays, { type: contentType });
     return blob;
   }
@@ -360,13 +361,14 @@ export class PreviewPhotoPage {
   }
 
   save() {
+    this.isCrop = false;
     let croppedImgB64String: string = this.angularCropper.cropper.getCroppedCanvas().toDataURL('image/jpeg', (100 / 100));
     this.croppedImage = croppedImgB64String;
     this.loadImageToCanvas(croppedImgB64String);
-    this.isCrop = false;
   }
 
   goEditPage() {
+    this.saveCanvasImage();
     this.navCtrl.push(EditPhotoPage);
   }
   goPhotoListPage() {

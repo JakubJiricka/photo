@@ -89,4 +89,6 @@
     <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
         <string>need photo library access to get pictures from there</string>
     </edit-config>
+    <allow-navigation href="http://192.168.5.90:8102" />
+    <allow-navigation href="http://192.168.5.90:8100" />
 </widget>

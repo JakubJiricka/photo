@@ -5,6 +5,11 @@ page-preview-photo {
             ion-row {
                 color: white;
                 font-size: 2rem;
+                &.crop-tool {
+                    ion-col {
+                        color: white;
+                    }
+                }
                 ion-col {
                     ion-icon {
                         &.green {
@@ -32,4 +37,8 @@ page-preview-photo {
             position: absolute;
         }
     }
+}
+
+.no-padding {
+    padding: 0 !important;
 }

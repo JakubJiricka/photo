@@ -1,6 +1,6 @@
-<ion-header class="preview">
+<ion-header class="preview" #header>
     <ion-grid>
-      <ion-row justify-content-between align-items-center>
+      <ion-row justify-content-between align-items-center *ngIf="!isCrop">
         <ion-col col-auto>
           <ion-icon name="close-circle" (click)="goPhotoListPage()" class="close-circle"></ion-icon>
         </ion-col>
@@ -31,78 +31,53 @@
         <ion-col col-auto>
           <ion-icon name="undo" (click)="undo();"></ion-icon>
         </ion-col>
-        <!-- <ion-col col-auto (click)="clear()">
-          <ion-icon name="close"></ion-icon>
-        </ion-col>         -->
-        <ion-col col-auto *ngIf="isCrop">
-          <ion-icon name="checkmark" (click)="save()"></ion-icon>
-        </ion-col>
         <button ion-button round outline color="light" small (click)="upload()">Save</button>
+      </ion-row>
+
+      <!-- show crop tool -->
+      <ion-row justify-content-between align-items-center *ngIf="isCrop" class="crop-tool">
+        <ion-col col-auto>
+          <ion-icon name="close-circle" (click)="isCrop=false;" class="close-circle"></ion-icon>
+        </ion-col>
+        <ion-col col-auto>
+          <ion-icon name="add" (click)="zoom(true)"></ion-icon>
+        </ion-col>
+        <ion-col col-auto>
+          <ion-icon name="remove" (click)="zoom(false)"></ion-icon>
+        </ion-col>
+        <ion-col col-auto>
+          <ion-icon name="refresh" (click)="rotate()"></ion-icon>
+        </ion-col>
+        <ion-col col-auto>
+          <button ion-button clear color="light" small (click)="scaleX()" class="no-padding">
+            Flip X
+          </button>
+        </ion-col>
+        <ion-col col-auto>
+          <button ion-button clear color="light" small (click)="scaleY()" class="no-padding">
+            Flip Y
+          </button>
+        </ion-col>
+        <ion-col col-auto>
+          <ion-icon name="arrow-round-up" (click)="move(0, -10)"></ion-icon>
+        </ion-col>
+        <ion-col col-auto>
+          <ion-icon name="arrow-round-down" (click)="move(0, 10)"></ion-icon>
+        </ion-col>
+        <ion-col col-auto>
+          <ion-icon name="arrow-round-back" (click)="move(-10, 0)"></ion-icon>
+        </ion-col>
+        <ion-col col-auto>
+          <ion-icon name="arrow-round-forward" (click)="move(10, 0)"></ion-icon>
+        </ion-col>
+        <button ion-button round outline color="light" small (click)="save()">Save</button>
       </ion-row>
     </ion-grid>
 
 </ion-header>
  
 <ion-content class="preview">
-  <canvas #imageCanvas (touchstart)="startDrawing($event)" (touchmove)="moved($event)" (touchend)="endDrawing()"></canvas>
+  <canvas #imageCanvas (touchstart)="startDrawing($event)" (touchmove)="moved($event)" (touchend)="endDrawing()" [style.display]="isCrop?'none':'block'"></canvas>
   <input type="text" [style.marginTop.px]="textTop" [style.marginLeft.px]="textLeft" [style.color]="selectedColor" [style.display]="inputDisplay" class="canvas-text" [(ngModel)]="text" />
-  <angular-cropper #angularCropper [cropperOptions]="cropperOptions" [imageUrl]="imageUrlToCrop" *ngIf="isCrop"></angular-cropper>
-  
-  <ion-row *ngIf="isCrop">
-    <ion-col col-4>
-      <button ion-button outline icon-left color="primary" small (click)="zoom(true)">
-        <ion-icon name="add"></ion-icon> Zoom
-      </button>
-    </ion-col>
-    <ion-col col-4>
-      <button ion-button outline icon-left color="primary" small (click)="zoom(false)">
-        <ion-icon name="remove"></ion-icon> Zoom
-      </button>
-    </ion-col>
-    <ion-col col-4>
-      <button ion-button outline icon-left small (click)="rotate()">
-        <ion-icon name="refresh"></ion-icon> 90 deg
-      </button>
-    </ion-col>
- 
-    <ion-col col-2>
-      <button ion-button clear small (click)="scaleX()">
-        Flip X
-      </button>
-    </ion-col>
-    <ion-col col-2>
-      <button ion-button clear small (click)="scaleY()">
-        Flip Y
-      </button>
-    </ion-col>
- 
-    <ion-col col-2>
-      <button ion-button clear small icon-only (click)="move(0, -10)">
-        <ion-icon name="arrow-round-up"></ion-icon>
-      </button>
-    </ion-col>
-    <ion-col col-2>
-      <button ion-button clear small icon-only (click)="move(0, 10)">
-        <ion-icon name="arrow-round-down"></ion-icon>
-      </button>
-    </ion-col>
-    <ion-col col-2>
-      <button ion-button clear small icon-only (click)="move(-10, 0)">
-        <ion-icon name="arrow-round-back"></ion-icon>
-      </button>
-    </ion-col>
-    <ion-col col-2>
-      <button ion-button clear small icon-only (click)="move(10, 0)">
-        <ion-icon name="arrow-round-forward"></ion-icon>
-      </button>
-    </ion-col>
-  </ion-row>
- 
-  <ion-card *ngIf="croppedImage">
-    <ion-card-header>My Result</ion-card-header>
-    <ion-card-content>
-      <img [src]="croppedImage">
-    </ion-card-content>
-  </ion-card>
- 
+  <angular-cropper #angularCropper [cropperOptions]="cropperOptions" [imageUrl]="imageUrlToCrop" *ngIf="isCrop"></angular-cropper> 
 </ion-content>
