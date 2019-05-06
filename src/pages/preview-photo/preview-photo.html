@@ -31,7 +31,10 @@
         <ion-col col-auto>
           <ion-icon name="undo" (click)="undo();"></ion-icon>
         </ion-col>
-        <button ion-button round outline color="light" small (click)="upload()">Save</button>
+        <ion-col col-auto>
+          <ion-icon name="checkmark" (click)="upload()"></ion-icon>
+        </ion-col>
+        <!-- <button ion-button round outline color="light" small (click)="upload()">Save</button> -->
       </ion-row>
 
       <!-- show crop tool -->
@@ -48,7 +51,7 @@
         <ion-col col-auto>
           <ion-icon name="refresh" (click)="rotate()"></ion-icon>
         </ion-col>
-        <ion-col col-auto>
+        <!-- <ion-col col-auto>
           <button ion-button clear color="light" small (click)="scaleX()" class="no-padding">
             Flip X
           </button>
@@ -57,7 +60,7 @@
           <button ion-button clear color="light" small (click)="scaleY()" class="no-padding">
             Flip Y
           </button>
-        </ion-col>
+        </ion-col> -->
         <ion-col col-auto>
           <ion-icon name="arrow-round-up" (click)="move(0, -10)"></ion-icon>
         </ion-col>
@@ -70,7 +73,10 @@
         <ion-col col-auto>
           <ion-icon name="arrow-round-forward" (click)="move(10, 0)"></ion-icon>
         </ion-col>
-        <button ion-button round outline color="light" small (click)="save()">Save</button>
+        <ion-col col-auto>
+          <ion-icon name="checkmark" (click)="save()"></ion-icon>
+        </ion-col>
+        <!-- <button ion-button round outline color="light" small (click)="save()">Save</button> -->
       </ion-row>
     </ion-grid>
 
@@ -79,6 +85,6 @@
 <ion-content class="preview">
   <canvas #imageCanvas (touchstart)="startDrawing($event)" (touchmove)="moved($event)" (touchend)="endDrawing()" [style.display]="isCrop?'none':'block'"></canvas>
   <input type="text" [style.marginTop.px]="textTop" [style.marginLeft.px]="textLeft" [style.color]="selectedColor" [style.display]="inputDisplay" class="canvas-text" [(ngModel)]="text" />
-  <angular-cropper #angularCropper [cropperOptions]="cropperOptions" [imageUrl]="imageUrlToCrop" *ngIf="isCrop"></angular-cropper>
+  <angular-cropper #angularCropper [cropperOptions]="cropperOptions" [imageUrl]="imageUrlToCrop" *ngIf="isCrop" (touchstart)="cropperTouchStart($event)"></angular-cropper>
   <notifications></notifications>
 </ion-content>

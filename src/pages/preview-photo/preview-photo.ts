@@ -241,7 +241,7 @@ export class PreviewPhotoPage {
     
     if (this.isArrow) {
       let ctx = this.canvasElement.getContext('2d');
-      ctx.arrow(this.startX, this.startY - 50, this.saveX, this.saveY - 50, [0, 1, -10, 1, -10, 5]);
+      ctx.arrow(this.startX, this.startY, this.saveX, this.saveY, [0, 1, -10, 1, -10, 5]);
       ctx.fill();
     }
 
@@ -326,6 +326,11 @@ export class PreviewPhotoPage {
 
   move(x, y) {
     this.angularCropper.cropper.move(x, y);
+  }
+
+  cropperTouchStart(event) {
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   save() {
