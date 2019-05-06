@@ -31,7 +31,6 @@ export class PreviewPhotoPage {
   croppedImage = null;
 
   storedImages = [];
-  pendingUploadImages = [];
 
   myImage = null;
   scaleValX = 1;
@@ -77,11 +76,6 @@ export class PreviewPhotoPage {
       this.storage.get(STORAGE_KEY).then(data => {
         if (data != undefined) {
           this.storedImages = data;
-        }
-      });
-      this.storage.get(UPLOAD_KEY).then(data => {
-        if (data != undefined) {
-          this.pendingUploadImages = data;
         }
       });
     });
@@ -140,11 +134,12 @@ export class PreviewPhotoPage {
     img.onload = function () {
       ctx.drawImage(img, 0, 0, width, height);
     };
+    setTimeout(() => {}, 500);
   }
 
   // Tools
   arrowTool() {
-    this.isPen = false; this.isText = false; this.isArrow = true; this.inputDisplay = "none"; this.text = '';
+    this.isPen = false; this.isText = false; this.isArrow = true; this.inputDisplay = "none";
     if (this.text != '') this.writeText();
   }
 
@@ -153,7 +148,8 @@ export class PreviewPhotoPage {
   }
 
   penTool() {
-    this.isText = false; this.isArrow = false; this.isPen = true; this.inputDisplay = "none"; this.text = '';
+    this.isText = false; this.isArrow = false; this.isPen = true; this.inputDisplay = "none";
+    if (this.text != '') this.writeText();
   }
 
   cropTool() {
@@ -161,7 +157,7 @@ export class PreviewPhotoPage {
     this.imageUrlToCrop = dataUrl;
     this.isCrop = true;
     this.inputDisplay = "none";
-    this.text = '';
+    if (this.text != '') this.writeText();
   }
 
   undo() {
@@ -279,9 +275,8 @@ export class PreviewPhotoPage {
     this.storeImage();
     this.toast.show('Photo queued for upload', '1000', 'center').subscribe(
       toast => {
-        this.photoService.openCamera = true;
         this.events.publish('upload', ++this.photoService.upload_count);
-        this.navCtrl.push(PhotoListPage);
+        this.goPhotoListPage();
       }
     );
   }
@@ -289,12 +284,12 @@ export class PreviewPhotoPage {
   storeImage() {
     let saveObj = { image_string: this.dataUrl, notes: this.photoService.notes, category: this.photoService.category, fileName: this.photoService.fileName };
     this.storedImages.push(saveObj);
-    this.pendingUploadImages.push(saveObj);
-    this.storage.set(UPLOAD_KEY, this.pendingUploadImages).then(() => {
-    });
-    this.storage.set(STORAGE_KEY, this.storedImages).then(() => {
-      this.photoService.uploadPhoto();
-    });
+    this.photoService.pendingUploadImages.push(saveObj);
+    this.storage.set(UPLOAD_KEY, this.photoService.pendingUploadImages).then(() => {
+      this.storage.set(STORAGE_KEY, this.storedImages).then(() => {
+        //this.photoService.uploadPhoto();
+      });
+    });    
   }
 
   removeImageAtIndex(index) {
@@ -345,6 +340,7 @@ export class PreviewPhotoPage {
     this.navCtrl.push(EditPhotoPage);
   }
   goPhotoListPage() {
+    this.photoService.openCamera = true;
     this.navCtrl.push(PhotoListPage);
   }
 }

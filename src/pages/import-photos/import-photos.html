@@ -15,7 +15,7 @@
   <ion-grid>
     <ion-row>
       <ion-col col-3 *ngFor="let img of images; let i = index" (click)="checked[i]=!checked[i]">
-        <img [src]="img | cdvphotolibrary" />
+        <img [src]="img" />
         <ion-icon name="checkmark-circle" *ngIf="checked[i]"></ion-icon>
       </ion-col>
     </ion-row>

@@ -29,6 +29,8 @@ export class PhotoProvider {
   openCamera = false;
   storedImages = [];
   upload_count = 0;
+  mytimer : any;
+  handle = 0;
 
   constructor(
     public http: HttpClient,
@@ -41,14 +43,18 @@ export class PhotoProvider {
       this.storage.get(UPLOAD_KEY).then(data => {
         if (data != undefined) {
           this.pendingUploadImages = data;
+          console.log(this.pendingUploadImages.length);
           that.upload_count = this.pendingUploadImages.length;          
         }
         that.events.publish('upload',this.upload_count);
       });
     });
+    setTimeout(() => {
+      that.uploadPhoto();
+    }, 500);
   }
 
-  apiUrl = 'https://your server url';
+  apiUrl = 'http://192.168.5.90:3000';
 
   getPhotos() {
     return new Promise(resolve => {
@@ -61,8 +67,8 @@ export class PhotoProvider {
   }
 
   addPhoto(data) {
-    return new Promise((resolve, reject) => {      
-      this.http.post(this.apiUrl+'/photo', JSON.stringify(data))
+    return new Promise((resolve, reject) => { 
+      this.http.post(this.apiUrl+'/photo', data)
         .subscribe(res => {
           resolve(res);
         }, (err) => {
@@ -73,14 +79,24 @@ export class PhotoProvider {
 
   uploadPhoto() {
     let that = this;
-    if(this.pendingUploadImages.length > 1) return;
-    let mytimer = setInterval(function(){
-      if(that.pendingUploadImages.length === 0) clearInterval(mytimer);
+    console.log('timer-');
+    console.log(this.handle);
+    if(this.handle != 0) return;
+    this.handle = 1;     
+    this.mytimer = setInterval(function(){
+      console.log(that.pendingUploadImages.length);
+      if(that.pendingUploadImages.length === 0) {
+        clearInterval(this.mytimer);
+        that.handle = 0;
+        return;
+      }
       let first = that.pendingUploadImages[0];
       that.addPhoto(first).then((result) => {
+        console.log('yes 1');
         console.log(result);
         that.removeImageAtIndex(0);
       }, (err) => {
+        console.log('no');
         console.log(err);
       });
     }, 10000);

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { LoginPage } from '../login/login';
 import { PreviewPhotoPage } from '../preview-photo/preview-photo';
 import { ImportPhotosPage } from '../import-photos/import-photos';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -41,12 +42,12 @@ export class PhotoListPage {
       });
     });
 
-    // Load all images from server
+    //Load all images from server
 
     // this.photoService.getPhotos()
     // .then(data => {
     //   this.photos = data;
-    //   console.log(this.photos);
+    //   console.log(this.photos.length);
     // });
 
     //this.photoService.images = this.storedImages;
@@ -99,6 +100,7 @@ export class PhotoListPage {
   }
 
   goBack() {
+    this.navCtrl.push(LoginPage);
   }
 
   pressed(i) {

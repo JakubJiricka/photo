@@ -19,7 +19,6 @@ export class ImportPreviewPage {
   category = ["Before", "After", "Damage", "Documents"];
   selected = 0;
   storedImages = [];
-  pendingUploadImages = [];
 
   constructor(
     public navCtrl: NavController, 
@@ -33,15 +32,6 @@ export class ImportPreviewPage {
     for(let i = 0; i < 4; i++) {
       this.checked[i] = false;
     }
-
-    // Load all stored images when the app is ready
-    this.storage.ready().then(() => {
-      this.storage.get(UPLOAD_KEY).then(data => {
-        if (data != undefined) {
-          this.pendingUploadImages = data;
-        }
-      });
-    });
 
     this.storedImages = this.photoService.storedImages;
     this.checked[0] = true;
@@ -70,11 +60,11 @@ export class ImportPreviewPage {
     for(let i = 0; i < this.count; i++) {
       this.storedImages[i].category = this.category[this.selected];
       console.log(this.storedImages[i]);
-      this.pendingUploadImages.push(this.storedImages[i]);
-      this.storage.set(UPLOAD_KEY, this.pendingUploadImages).then(() => {
+      this.photoService.pendingUploadImages.push(this.storedImages[i]);
+      this.storage.set(UPLOAD_KEY, this.photoService.pendingUploadImages).then(() => {
       });
     }
-    this.photoService.uploadPhoto();
+    //this.photoService.uploadPhoto();
     let message = '';
     if(this.count > 1)  message = "Photos queued for upload";
     else message = "Photo queued for upload";
