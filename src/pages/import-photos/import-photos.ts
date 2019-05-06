@@ -46,9 +46,9 @@ export class ImportPhotosPage {
       });
     })
       .catch(err => console.log('permissions weren\'t granted'));
-    this.images.push("cdvphotolibrary://thumbnail?photoId=91447%3B%2Fstorage%2Femulated%2F0%2FDCIM%2FCamera%2FContactPhoto-IMG_20181112_161920.jpg&width=512&height=384&quality=0.5");
-    console.log(that.getImgContent("cdvphotolibrary://thumbnail?photoId=91447%3B%2Fstorage%2Femulated%2F0%2FDCIM%2FCamera%2FContactPhoto-IMG_20181112_161920.jpg&width=512&height=384&quality=0.5"));
-    this.images.push("assets/imgs/photo-list/1.jpg");
+    // this.images.push("cdvphotolibrary://thumbnail?photoId=91447%3B%2Fstorage%2Femulated%2F0%2FDCIM%2FCamera%2FContactPhoto-IMG_20181112_161920.jpg&width=512&height=384&quality=0.5");
+    // console.log(that.getImgContent("cdvphotolibrary://thumbnail?photoId=91447%3B%2Fstorage%2Femulated%2F0%2FDCIM%2FCamera%2FContactPhoto-IMG_20181112_161920.jpg&width=512&height=384&quality=0.5"));
+    // this.images.push("assets/imgs/photo-list/1.jpg");
   }
 
   goCamera() {
