@@ -15,6 +15,7 @@ export class ImportPhotosPage {
   images = [];
   checked = [];
   toUpload: any;
+  selectCase = true;
 
   constructor(
     public navCtrl: NavController,
@@ -22,10 +23,10 @@ export class ImportPhotosPage {
     public photoService: PhotoProvider,
     private toast: Toast,
   ) {
-    for (let i = 0; i < 100; i++) {
-      this.checked[i] = false;
-    }
     this.images = this.photoService.multiImages;
+    for (let i = 0; i < this.images.length; i++) {
+      this.checked[i] = false;
+    }    
   }
 
   ionViewDidLoad() {
@@ -55,6 +56,20 @@ export class ImportPhotosPage {
     }else {
       this.navCtrl.push(ImportPreviewPage);
     }    
+  }
+
+  selectAll() {
+    this.selectCase = false;
+    for (let i = 0; i < this.images.length; i++) {
+      this.checked[i] = true;
+    }
+  }
+
+  deSelectAll() {
+    this.selectCase = true;
+    for (let i = 0; i < this.images.length; i++) {
+      this.checked[i] = false;
+    }
   }
 
   // convertToDataURLviaCanvas(url, outputFormat) {

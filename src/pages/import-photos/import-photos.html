@@ -4,6 +4,12 @@
       <ion-col col-auto>
         <button ion-button round outline color="blue" small (click)="goListPage(false)">Cancel</button>
       </ion-col>
+      <ion-col col-auto *ngIf="selectCase">
+        <ion-icon name="square" (click)="selectAll()"></ion-icon>
+      </ion-col>
+      <ion-col col-auto *ngIf="!selectCase">
+        <ion-icon name="checkbox" (click)="deSelectAll()"></ion-icon>
+      </ion-col>
       <ion-col col-auto>
         <button ion-button round outline color="blue" small (click)="goImportPreview()">Next</button>
       </ion-col>

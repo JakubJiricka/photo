@@ -1,4 +1,16 @@
 page-import-photos {
+    ion-header {
+        ion-grid {
+            ion-row {
+                ion-col {
+                    ion-icon {
+                        color: blue;
+                        font-size: 2rem;
+                    }
+                }
+            }
+        }
+    }
     ion-content {
         ion-grid {
             ion-row {
