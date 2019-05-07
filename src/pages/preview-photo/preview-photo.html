@@ -2,7 +2,7 @@
     <ion-grid>
       <ion-row justify-content-between align-items-center *ngIf="!isCrop">
         <ion-col col-auto>
-          <ion-icon name="close-circle" (click)="goPhotoListPage()" class="close-circle"></ion-icon>
+          <ion-icon name="close-circle" (click)="goPhotoListPage(false)" class="close-circle"></ion-icon>
         </ion-col>
         <ion-col col-auto>
           <ion-icon name="brush" (click)="penTool();"></ion-icon>

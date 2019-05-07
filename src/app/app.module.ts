@@ -19,8 +19,8 @@ import { EditPhotoPage } from '../pages/edit-photo/edit-photo';
 import { ImportPhotosPage } from '../pages/import-photos/import-photos';
 import { ImportPreviewPage } from '../pages/import-preview/import-preview';
 import { PhotoProvider } from '../providers/photo/photo';
-import { PhotoLibrary } from '@ionic-native/photo-library';
 import { Toast } from '@ionic-native/toast';
+import { ImagePicker } from '@ionic-native/image-picker';
 
 import {NotificationsComponent} from '../components/notifications/notifications';
 
@@ -61,10 +61,10 @@ import {NotificationsComponent} from '../components/notifications/notifications'
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     File,
     PhotoProvider,
-    PhotoLibrary,
     Camera,
     CameraPreview,
-    Toast
+    Toast,
+    ImagePicker
   ]
 })
 export class AppModule {}

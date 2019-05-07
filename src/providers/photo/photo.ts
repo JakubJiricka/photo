@@ -31,6 +31,8 @@ export class PhotoProvider {
   upload_count = 0;
   mytimer : any;
   handle = 0;
+  edit = -1;
+  multiImages = [];
 
   constructor(
     public http: HttpClient,
@@ -43,8 +45,7 @@ export class PhotoProvider {
       this.storage.get(UPLOAD_KEY).then(data => {
         if (data != undefined) {
           this.pendingUploadImages = data;
-          console.log(this.pendingUploadImages.length);
-          that.upload_count = this.pendingUploadImages.length;          
+          that.upload_count = this.pendingUploadImages.length;     
         }
         that.events.publish('upload',this.upload_count);
       });
@@ -79,8 +80,6 @@ export class PhotoProvider {
 
   uploadPhoto() {
     let that = this;
-    console.log('timer-');
-    console.log(this.handle);
     if(this.handle != 0) return;
     this.handle = 1;     
     this.mytimer = setInterval(function(){
@@ -92,7 +91,7 @@ export class PhotoProvider {
       }
       let first = that.pendingUploadImages[0];
       that.addPhoto(first).then((result) => {
-        console.log('yes 1');
+        console.log('yes');
         console.log(result);
         that.removeImageAtIndex(0);
       }, (err) => {

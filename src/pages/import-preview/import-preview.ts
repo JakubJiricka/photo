@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import { Toast } from '@ionic-native/toast';
 
 const UPLOAD_KEY = 'UPLOAD_FILE';
+const STORAGE_KEY = 'IMAGE_LIST';
 
 @IonicPage()
 @Component({
@@ -18,34 +19,43 @@ export class ImportPreviewPage {
   count = 0;
   category = ["Before", "After", "Damage", "Documents"];
   selected = 0;
+  tempImages = [];
   storedImages = [];
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
     public photoService: PhotoProvider,
     private storage: Storage,
     private toast: Toast,
     public events: Events
-    ) {
+  ) {
 
-    for(let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
       this.checked[i] = false;
     }
 
-    this.storedImages = this.photoService.storedImages;
+    this.tempImages = this.photoService.storedImages;
     this.checked[0] = true;
+    // Load all stored images when the app is ready
+    this.storage.ready().then(() => {
+      this.storage.get(STORAGE_KEY).then(data => {
+        if (data != undefined) {
+          this.storedImages = data;
+        }
+      });
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ImportPreviewPage');
     setTimeout(() => {
-      this.count = this.storedImages.length;
-    }, 500);   
+      this.count = this.tempImages.length;
+    }, 100);
   }
 
   clickItem(num: number) {
-    for(let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
       this.checked[i] = false;
     }
     this.checked[num] = true;
@@ -57,23 +67,25 @@ export class ImportPreviewPage {
   }
 
   goListPage() {
-    for(let i = 0; i < this.count; i++) {
-      this.storedImages[i].category = this.category[this.selected];
-      console.log(this.storedImages[i]);
-      this.photoService.pendingUploadImages.push(this.storedImages[i]);
-      this.storage.set(UPLOAD_KEY, this.photoService.pendingUploadImages).then(() => {
-      });
+    for (let i = 0; i < this.count; i++) {
+      this.tempImages[i].category = this.category[this.selected];
+      this.storedImages.push(this.tempImages[i]);
+      this.photoService.pendingUploadImages.push(this.tempImages[i]);
     }
-    //this.photoService.uploadPhoto();
-    let message = '';
-    if(this.count > 1)  message = "Photos queued for upload";
-    else message = "Photo queued for upload";
-    this.toast.show(message, '1000', 'center').subscribe(
-      toast => {
+    this.storage.set(UPLOAD_KEY, this.photoService.pendingUploadImages).then(() => {
+      this.storage.set(STORAGE_KEY, this.storedImages).then(() => {
+        let message = '';
+        if (this.count > 1) message = "Photos queued for upload";
+        else message = "Photo queued for upload";
+        this.toast.show(message, '1000', 'center').subscribe(
+          toast => {
+          }
+        );
         this.photoService.upload_count += this.count;
         this.events.publish('upload', this.photoService.upload_count);
         this.navCtrl.push(PhotoListPage);
-      }
-    );
+        return false;
+      })
+    });
   }
 }

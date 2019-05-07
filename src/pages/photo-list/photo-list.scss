@@ -11,6 +11,14 @@ page-photo-list {
     
     ion-content {
         ion-grid {
+            ion-row {
+                ion-col {
+                    img {
+                        height: 100px;
+                        width: 100%;
+                    }
+                }
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ import { ImportPhotosPage } from '../import-photos/import-photos';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { PhotoProvider } from '../../providers/photo/photo';
 import { Storage } from '@ionic/storage';
+import { ImagePicker, ImagePickerOptions } from '@ionic-native/image-picker';
 
 const STORAGE_KEY = 'IMAGE_LIST';
 
@@ -30,7 +31,8 @@ export class PhotoListPage {
     private camera: Camera,
     private storage: Storage,
     public photoService: PhotoProvider,
-    public events: Events
+    public events: Events,
+    private imagePicker: ImagePicker
   ) {
 
     // Load all stored images when the app is ready
@@ -42,6 +44,8 @@ export class PhotoListPage {
       });
     });
 
+    this.photoService.storedImages = [];
+
     //Load all images from server
 
     // this.photoService.getPhotos()
@@ -51,7 +55,6 @@ export class PhotoListPage {
     // });
 
     //this.photoService.images = this.storedImages;
-    console.log(this.storedImages);
   }
 
 
@@ -70,6 +73,7 @@ export class PhotoListPage {
   }
 
   openCamera() {
+    this.photoService.edit = -1;
 
     const options: CameraOptions = {
       quality: 100,
@@ -82,16 +86,17 @@ export class PhotoListPage {
     this.camera.getPicture(options).then((imageData) => {
       // imageData is either a base64 encoded string or a file URI
       this.picture = 'data:image/jpeg;base64,' + imageData;
-      this.goPreviewPage(this.picture);
+      this.goPreviewPage(this.picture, -1);
     }, (err) => {
       // Handle error
     });
   }
 
-  goPreviewPage(str: string) {
+  goPreviewPage(str: string, index: number) {
     if (!this.isLongPress) {
       if (str != "new") {
         this.photoService.current = str;
+        this.photoService.edit = index;
         this.navCtrl.push(PreviewPhotoPage);
       } else {
         this.openCamera();
@@ -123,6 +128,20 @@ export class PhotoListPage {
   }
 
   goImportPhotos() {
-    this.navCtrl.push(ImportPhotosPage);
+    this.photoService.multiImages = [];
+    let that = this;
+    let options: ImagePickerOptions = {
+      quality: 100,
+      width: 600,
+      height: 600,
+      maximumImagesCount: 15,
+      outputType: 1
+    };
+    this.imagePicker.getPictures(options).then((results) => {
+      for (var i = 0; i < results.length; i++) {
+        that.photoService.multiImages.push('data:image/jpeg;base64,' + results[i]);
+      }
+      this.navCtrl.push(ImportPhotosPage);
+    }, (err) => { });
   }
 }

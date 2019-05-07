@@ -272,22 +272,25 @@ export class PreviewPhotoPage {
 
   upload() {
     this.saveCanvasImage();
-    this.storeImage();
-    this.toast.show('Photo queued for upload', '1000', 'center').subscribe(
-      toast => {
-        this.events.publish('upload', ++this.photoService.upload_count);
-        this.goPhotoListPage();
-      }
-    );
+    this.storeImage();    
   }
 
   storeImage() {
     let saveObj = { image_string: this.dataUrl, notes: this.photoService.notes, category: this.photoService.category, fileName: this.photoService.fileName };
-    this.storedImages.push(saveObj);
+    if(this.photoService.edit > -1) {
+      this.storedImages[this.photoService.edit] = saveObj;
+    }else {
+      this.storedImages.push(saveObj);
+    }    
     this.photoService.pendingUploadImages.push(saveObj);
     this.storage.set(UPLOAD_KEY, this.photoService.pendingUploadImages).then(() => {
       this.storage.set(STORAGE_KEY, this.storedImages).then(() => {
-        //this.photoService.uploadPhoto();
+        this.toast.show('Photo queued for upload', '1000', 'center').subscribe(
+          toast => {
+            this.events.publish('upload', ++this.photoService.upload_count);
+          }
+        );
+        this.goPhotoListPage(false);
       });
     });    
   }
@@ -344,8 +347,8 @@ export class PreviewPhotoPage {
     this.saveCanvasImage();
     this.navCtrl.push(EditPhotoPage);
   }
-  goPhotoListPage() {
-    this.photoService.openCamera = true;
+  goPhotoListPage(flag) {
+    this.photoService.openCamera = flag;
     this.navCtrl.push(PhotoListPage);
   }
 }
