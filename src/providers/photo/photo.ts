@@ -45,7 +45,7 @@ export class PhotoProvider {
       this.storage.get(UPLOAD_KEY).then(data => {
         if (data != undefined) {
           this.pendingUploadImages = data;
-          that.upload_count = this.pendingUploadImages.length;     
+          that.upload_count = this.pendingUploadImages.length;
         }
         that.events.publish('upload',this.upload_count);
       });
@@ -103,8 +103,9 @@ export class PhotoProvider {
 
   removeImageAtIndex(index) {
     this.pendingUploadImages.splice(index, 1);
-    this.storage.set(UPLOAD_KEY, this.pendingUploadImages);
-    this.upload_count = this.pendingUploadImages.length;
-    this.events.publish('upload',this.upload_count);
+    this.storage.set(UPLOAD_KEY, this.pendingUploadImages).then(() => {
+      this.upload_count = this.pendingUploadImages.length;
+      this.events.publish('upload',this.upload_count);
+    });
   }
 }
