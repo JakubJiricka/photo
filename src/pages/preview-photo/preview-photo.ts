@@ -287,9 +287,9 @@ export class PreviewPhotoPage {
       this.storage.set(STORAGE_KEY, this.storedImages).then(() => {
         this.toast.show('Photo queued for upload', '1000', 'center').subscribe(
           toast => {
-            this.events.publish('upload', ++this.photoService.upload_count);
           }
         );
+        this.events.publish('upload', ++this.photoService.upload_count);
         this.goPhotoListPage(false);
       });
     });    

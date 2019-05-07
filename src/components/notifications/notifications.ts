@@ -38,7 +38,6 @@ export class NotificationsComponent {
           that.text = "1 photo left to upload";
         } else {
           that.text = that.count + " photo(s) left to upload";
-          console.log(that.text);
         }
       }
     })
