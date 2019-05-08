@@ -198,7 +198,7 @@ export class PreviewPhotoPage {
       this.tempTop = "0";
       ctx.lineWidth = 1;
       ctx.strokeStyle = "red";
-      ctx.fillStyle = "red";
+      ctx.fillStyle = this.selectedColor;
 
       //ctx.setTransform(1, 0, 0, 1, 20, 0);
       //ctx.translate(0, 40);

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, Events, Platform } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { PreviewPhotoPage } from '../preview-photo/preview-photo';
 import { ImportPhotosPage } from '../import-photos/import-photos';
@@ -16,6 +16,7 @@ const STORAGE_KEY = 'IMAGE_LIST';
   templateUrl: 'photo-list.html',
 })
 export class PhotoListPage {
+  @ViewChild('header') header: any;
   Arr = Array;
   num: number = 60;
   picture = '';
@@ -32,7 +33,8 @@ export class PhotoListPage {
     private storage: Storage,
     public photoService: PhotoProvider,
     public events: Events,
-    private imagePicker: ImagePicker
+    private imagePicker: ImagePicker,
+    private plt: Platform,
   ) {
 
     // Load all stored images when the app is ready
@@ -128,12 +130,14 @@ export class PhotoListPage {
   }
 
   goImportPhotos() {
+    let height = this.plt.height() - this.header.nativeElement.offsetHeight
+    console.log(this.plt.width() + '-' + height);
     this.photoService.multiImages = [];
     let that = this;
     let options: ImagePickerOptions = {
       quality: 100,
-      width: 600,
-      height: 600,
+      width: this.plt.width(),
+      height: height,
       maximumImagesCount: 15,
       outputType: 1
     };
