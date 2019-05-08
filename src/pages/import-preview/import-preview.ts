@@ -35,7 +35,7 @@ export class ImportPreviewPage {
       this.checked[i] = false;
     }
 
-    this.tempImages = this.photoService.storedImages;
+    this.tempImages = this.photoService.multiImages;
     this.checked[0] = true;
     // Load all stored images when the app is ready
     this.storage.ready().then(() => {
@@ -63,7 +63,9 @@ export class ImportPreviewPage {
   }
 
   goImportPhoto() {
-    this.navCtrl.push(ImportPhotosPage);
+    //this.navCtrl.push(ImportPhotosPage);
+    //this.photoService.openGallery = true;
+    this.navCtrl.push(PhotoListPage);
   }
 
   goListPage() {

@@ -29,7 +29,11 @@ page-preview-photo {
     
     ion-content.preview {
         .scroll-content {
-            transform: translateY(-2px);
+            angular-cropper {
+                .angular-cropper-wrapper {
+                    transform: translateY(-2px);
+                }
+            }
         }
         .canvas-text {
             position: absolute;

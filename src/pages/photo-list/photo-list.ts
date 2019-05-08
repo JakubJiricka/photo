@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, Events, Platform } from 'ionic-ang
 import { LoginPage } from '../login/login';
 import { PreviewPhotoPage } from '../preview-photo/preview-photo';
 import { ImportPhotosPage } from '../import-photos/import-photos';
+import { ImportPreviewPage } from '../import-preview/import-preview';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { PhotoProvider } from '../../providers/photo/photo';
 import { Storage } from '@ionic/storage';
@@ -71,6 +72,11 @@ export class PhotoListPage {
     if (this.photoService.openCamera) {
       this.photoService.openCamera = false;
       this.openCamera();
+    }
+
+    if (this.photoService.openGallery) {
+      this.photoService.openGallery = false;
+      this.goImportPhotos();
     }
   }
 
@@ -143,9 +149,11 @@ export class PhotoListPage {
     };
     this.imagePicker.getPictures(options).then((results) => {
       for (var i = 0; i < results.length; i++) {
-        that.photoService.multiImages.push('data:image/jpeg;base64,' + results[i]);
+        let saveObj = { image_string: 'data:image/jpeg;base64,' + results[i], notes: '', category: '', fileName: '' };
+        that.photoService.multiImages.push(saveObj);
       }
-      this.navCtrl.push(ImportPhotosPage);
+      console.log(that.photoService.multiImages.length);
+      this.navCtrl.push(ImportPreviewPage);
     }, (err) => { });
   }
 }

@@ -33,6 +33,7 @@ export class PhotoProvider {
   handle = 0;
   edit = -1;
   multiImages = [];
+  openGallery = false;
 
   constructor(
     public http: HttpClient,
